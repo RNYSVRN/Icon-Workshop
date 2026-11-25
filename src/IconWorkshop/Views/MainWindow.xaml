@@ -12,7 +12,8 @@
     <!-- Content reaches into the title bar (app icon + name there, like Windows 11 apps);
          Windows still draws the caption buttons, incl. snap layouts -->
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="48" GlassFrameThickness="-1" ResizeBorderThickness="6" UseAeroCaptionButtons="True" CornerRadius="0" />
+        <WindowChrome CaptionHeight="48" GlassFrameThickness="-1" ResizeBorderThickness="6" UseAeroCaptionButtons="True" CornerRadius="0"
+                      NonClientFrameEdges="Left,Right,Bottom" />
     </WindowChrome.WindowChrome>
 
     <Window.Resources>

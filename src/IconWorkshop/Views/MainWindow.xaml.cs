@@ -80,8 +80,9 @@ public partial class MainWindow : Window, FluentDialog.IDimmable
         SettingsPanel.Initialize(this);
 
         SizeChanged += (_, _) => UpdateCompact();
-        StateChanged += (_, _) => UpdateMaximizedMargin();
-        SourceInitialized += (_, _) => UpdateMaximizedMargin();
+        SizeChanged += (_, _) => UpdateFrameMargin();
+        StateChanged += (_, _) => Dispatcher.BeginInvoke(UpdateFrameMargin, System.Windows.Threading.DispatcherPriority.Background);
+        ContentRendered += (_, _) => UpdateFrameMargin();
         UpdateCompact();
         PreviewKeyDown += OnPreviewKeyDown;
         DragEnter += OnDragOver;
@@ -272,20 +273,25 @@ public partial class MainWindow : Window, FluentDialog.IDimmable
     }
 
     /// <summary>
-    /// Maximized windows reach a few pixels beyond the screen edge; with the content drawn into the title bar
-    /// those pixels would be cut off, so the content moves in by the frame width.
+    /// The window keeps its left, right and bottom frame (so Windows draws the caption buttons flush with the
+    /// corner like in other apps), but WPF still lays the content out over the whole window rectangle. The
+    /// content therefore moves in by the part of the window that is not visible: the invisible resize border
+    /// in normal state, the overhang beyond the screen edge when maximized.
     /// </summary>
-    private void UpdateMaximizedMargin()
+    private void UpdateFrameMargin()
     {
-        if (WindowState != WindowState.Maximized) { Root.Margin = new Thickness(0); return; }
         var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
-        uint dpi = hwnd == IntPtr.Zero ? 96 : GetDpiForWindow(hwnd);
-        double frame = (GetSystemMetricsForDpi(32 /*SM_CXFRAME*/, dpi) + GetSystemMetricsForDpi(92 /*SM_CXPADDEDBORDER*/, dpi)) * 96.0 / dpi;
-        Root.Margin = new Thickness(frame);
+        if (hwnd == IntPtr.Zero || !GetWindowRect(hwnd, out var win)
+            || DwmGetWindowAttribute(hwnd, 9 /*DWMWA_EXTENDED_FRAME_BOUNDS*/, out var vis, 16) != 0) return;
+        double scale = VisualTreeHelper.GetDpi(this).DpiScaleX;
+        var margin = new Thickness(Math.Max(0, vis.Left - win.Left) / scale, Math.Max(0, vis.Top - win.Top) / scale,
+                                   Math.Max(0, win.Right - vis.Right) / scale, Math.Max(0, win.Bottom - vis.Bottom) / scale);
+        if (Root.Margin != margin) Root.Margin = margin;
     }
 
-    [System.Runtime.InteropServices.DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
-    [System.Runtime.InteropServices.DllImport("user32.dll")] private static extern int GetSystemMetricsForDpi(int index, uint dpi);
+    private struct NativeRect { public int Left, Top, Right, Bottom; }
+    [System.Runtime.InteropServices.DllImport("user32.dll")] private static extern bool GetWindowRect(IntPtr hwnd, out NativeRect rect);
+    [System.Runtime.InteropServices.DllImport("dwmapi.dll")] private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out NativeRect rect, int size);
 
     // ---------- Settings (in the same window) ----------
 
