@@ -1,0 +1,122 @@
+<UserControl x:Class="IconWorkshop.Views.SuggestionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:IconWorkshop"
+             xmlns:c="clr-namespace:IconWorkshop.Controls"
+             xmlns:v="clr-namespace:IconWorkshop.Views">
+    <!-- Suggestion wizard: an icon per program from a pack, review with checkboxes, apply in one step. -->
+    <UserControl.Resources>
+        <DataTemplate x:Key="SuggestionItem" DataType="{x:Type v:SuggestionRow}">
+            <Grid MinHeight="44">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" MinWidth="0" Margin="0,0,8,0" Padding="0"
+                          Click="Check_Click" AutomationProperties.Name="{Binding Name}" />
+                <Image Grid.Column="1" Source="{Binding Program.Icon}" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="2" Style="{StaticResource IconText}" Text="&#xE72A;" FontSize="12" Margin="10,0,10,0"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                <Image Grid.Column="3" Source="{Binding NewIcon}" Width="32" Height="32" Margin="0,0,16,0" RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center" />
+                <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,12,0">
+                    <TextBlock Text="{Binding Name}" FontSize="14" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Details}" Style="{StaticResource CardDesc}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                </StackPanel>
+                <Border Grid.Column="5" CornerRadius="10" Padding="10,3" Margin="0,0,12,0" VerticalAlignment="Center"
+                        Background="{DynamicResource ControlFillColorSecondaryBrush}">
+                    <TextBlock Text="{Binding ConfidenceText}" FontSize="12" />
+                </Border>
+                <Button Grid.Column="6" Padding="8,5" Margin="0,0,6,0" Click="Tune_Click" Tag="{Binding}" VerticalAlignment="Center" Visibility="{Binding GeneratedVisibility}"
+                        ToolTip="{x:Static v:SuggestionsView.TuneText}" AutomationProperties.Name="{x:Static v:SuggestionsView.TuneText}">
+                    <TextBlock Style="{StaticResource IconText}" Text="&#xE945;" FontSize="13" />
+                </Button>
+                <Button Grid.Column="7" Padding="8,5" Click="Other_Click" Tag="{Binding}" VerticalAlignment="Center"
+                        ToolTip="{x:Static v:SuggestionsView.OtherIconText}" AutomationProperties.Name="{x:Static v:SuggestionsView.OtherIconText}">
+                    <TextBlock Style="{StaticResource IconText}" Text="&#xE70F;" FontSize="13" />
+                </Button>
+            </Grid>
+        </DataTemplate>
+
+        <Style x:Key="StaticCardItem" TargetType="ListBoxItem" BasedOn="{StaticResource CardListItem}">
+            <Setter Property="Cursor" Value="Arrow" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+            <Button Style="{StaticResource LinkButton}" Content="{x:Static local:Loc.NavPrograms}" Click="Back_Click" FontSize="14" />
+            <TextBlock Style="{StaticResource IconText}" Text="&#xE76C;" FontSize="10" Margin="10,1,10,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            <TextBlock Text="{x:Static v:SuggestionsView.TitleText}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Margin="0,0,0,16">
+            <TextBlock Style="{StaticResource PageTitle}" Text="{x:Static v:SuggestionsView.TitleText}" />
+            <TextBlock Style="{StaticResource PageSubtitle}" Text="{x:Static v:SuggestionsView.SubtitleText}" />
+        </StackPanel>
+
+        <DockPanel Grid.Row="2" Margin="0,0,0,4" LastChildFill="False">
+            <ComboBox x:Name="PackBox" Width="220" DisplayMemberPath="Name" SelectionChanged="PackBox_SelectionChanged"
+                      AutomationProperties.Name="{x:Static local:Loc.NavPacks}" />
+            <CheckBox x:Name="HideChanged" Margin="16,0,0,0" IsChecked="True" VerticalAlignment="Center"
+                      Content="{x:Static v:SuggestionsView.HideChangedText}" Click="HideChanged_Click" />
+            <CheckBox x:Name="FillGaps" Margin="16,0,0,0" IsChecked="True" VerticalAlignment="Center" ToolTip="{x:Static v:SuggestionsView.FillGapsTip}"
+                      Content="{x:Static v:SuggestionsView.FillGapsText}" Click="FillGaps_Click" />
+            <Button DockPanel.Dock="Right" Content="{x:Static v:SuggestionsView.SelectNoneText}" Margin="8,0,0,0" Click="SelectNone_Click" />
+            <Button DockPanel.Dock="Right" Content="{x:Static v:SuggestionsView.SelectAllText}" Click="SelectAll_Click" />
+        </DockPanel>
+
+        <Border x:Name="InfoBar" Grid.Row="3" Style="{StaticResource InfoBar}" Margin="0,0,0,12" Visibility="Collapsed">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Padding="6" VerticalAlignment="Top" Click="CloseInfo_Click"
+                        Background="Transparent" BorderThickness="0" ToolTip="{x:Static local:Loc.Close}">
+                    <TextBlock Style="{StaticResource IconText}" Text="&#xE711;" FontSize="11" />
+                </Button>
+                <TextBlock x:Name="InfoIcon" DockPanel.Dock="Left" Style="{StaticResource IconText}" FontSize="16" Margin="0,0,12,0" VerticalAlignment="Top" />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="InfoTitle" FontWeight="SemiBold" TextWrapping="Wrap" />
+                    <TextBlock x:Name="InfoText" Style="{StaticResource SecondaryText}" TextWrapping="Wrap" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        <c:BusyBar x:Name="Busy" Grid.Row="4" Margin="0,0,0,12" Visibility="Collapsed" />
+
+        <ListBox x:Name="List" Grid.Row="5" Style="{StaticResource CardList}" ItemTemplate="{StaticResource SuggestionItem}"
+                 ItemContainerStyle="{StaticResource StaticCardItem}" VirtualizingPanel.IsVirtualizingWhenGrouping="True">
+            <ListBox.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource GroupHeader}" ContainerStyle="{StaticResource PlainGroupItem}" />
+            </ListBox.GroupStyle>
+        </ListBox>
+        <TextBlock x:Name="EmptyText" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0" TextWrapping="Wrap" TextAlignment="Center"
+                   MaxWidth="520" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Visibility="Collapsed" />
+
+        <Border Grid.Row="6" Style="{StaticResource Card}" Margin="0,12,0,0" Padding="16,12">
+            <DockPanel>
+                <Button x:Name="ApplyButton" DockPanel.Dock="Right" Style="{DynamicResource AccentButtonStyle}" Click="Apply_Click" MinWidth="160">
+                    <StackPanel Style="{StaticResource ButtonContent}">
+                        <TextBlock Style="{StaticResource ButtonGlyph}" Text="&#xE73E;" />
+                        <TextBlock Text="{x:Static v:SuggestionsView.ApplyText}" />
+                    </StackPanel>
+                </Button>
+                <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock x:Name="SummaryTitle" FontSize="14" FontWeight="SemiBold" />
+                    <TextBlock x:Name="SummaryText" Style="{StaticResource CardDesc}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

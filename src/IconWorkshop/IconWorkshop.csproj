@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Runs as the signed-in user (asInvoker); no admin rights by default. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- WPF ThemeMode (Fluent) is marked as experimental. -->
+    <NoWarn>$(NoWarn);WPF0001</NoWarn>
+    <AssemblyName>IconWorkshop</AssemblyName>
+    <RootNamespace>IconWorkshop</RootNamespace>
+    <Version>1.0.0</Version>
+    <Product>Icon Workshop</Product>
+    <AssemblyTitle>Icon Workshop</AssemblyTitle>
+    <Company>Ronny Severin</Company>
+    <Copyright>Copyright © 2026 Ronny Severin</Copyright>
+    <SatelliteResourceLanguages>en;de</SatelliteResourceLanguages>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.IO" />
+    <InternalsVisibleTo Include="PackProbe" />
+    <InternalsVisibleTo Include="ShortcutTest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+    <Resource Include="Assets\app.png" />
+    <!-- Free icon fonts (Material Symbols: Apache 2.0, Tabler Icons: MIT, Font Awesome Free: SIL OFL 1.1 / CC BY 4.0) -->
+    <Resource Include="Assets\Fonts\*.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\*-names.txt" LogicalName="Fonts.%(Filename).txt" />
+    <EmbeddedResource Include="Assets\Fonts\LICENSE-*.txt" LogicalName="Fonts.%(Filename).txt" />
+  </ItemGroup>
+
+</Project>

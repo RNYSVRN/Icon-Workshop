@@ -1,0 +1,543 @@
+<UserControl x:Class="IconWorkshop.Views.IconMakerPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:IconWorkshop"
+             xmlns:c="clr-namespace:IconWorkshop.Controls"
+             xmlns:v="clr-namespace:IconWorkshop.Views">
+    <UserControl.Resources>
+        <Style x:Key="Label" TargetType="TextBlock" BasedOn="{StaticResource CardDesc}">
+            <Setter Property="Margin" Value="0,12,0,6" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+        <Style x:Key="Section" TargetType="TextBlock" BasedOn="{StaticResource CardTitle}">
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <!-- Selectable small tile (shapes, glyphs) -->
+        <Style x:Key="PickItem" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,4,4" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bg" CornerRadius="6" Background="Transparent" BorderThickness="2" BorderBrush="Transparent" Padding="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bg" Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PickList" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource PickItem}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LayerItem" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,1" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Grid>
+                            <Border x:Name="Bg" CornerRadius="4" Background="Transparent" />
+                            <Border x:Name="Pill" Width="3" Height="16" CornerRadius="1.5" HorizontalAlignment="Left"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}" Visibility="Collapsed" />
+                            <ContentPresenter Margin="12,6,8,6" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                                <Setter TargetName="Pill" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="12,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,12">
+            <TextBlock x:Name="PageTitleText" Style="{StaticResource PageTitle}" Text="{x:Static v:IconMakerPage.TitleText}" />
+            <TextBlock Style="{StaticResource PageSubtitle}" Text="{x:Static v:IconMakerPage.SubtitleText}" />
+            <!-- Template gallery: previews of the current icon in each look -->
+            <WrapPanel x:Name="TemplateBar" Margin="0,14,0,0" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="320" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                <StackPanel>
+                    <!-- ===================== One-click generator ===================== -->
+                    <Expander x:Name="GenSection" Style="{StaticResource SettingsExpander}" IsExpanded="True">
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource NavGlyph}" Text="&#xE945;" FontSize="18" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.GenTitle}" Style="{StaticResource CardTitle}" />
+                                    <TextBlock Text="{x:Static v:IconMakerPage.GenDesc}" Style="{StaticResource CardDesc}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <TextBox x:Name="GenName" TextChanged="GenName_TextChanged" Padding="10,6,10,6" VerticalContentAlignment="Center"
+                                             AutomationProperties.Name="{x:Static v:IconMakerPage.GenNameHintText}" />
+                                    <TextBlock x:Name="GenNameHint" Text="{x:Static v:IconMakerPage.GenNameHintText}" IsHitTestVisible="False" Margin="12,0,0,0"
+                                               VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                </Grid>
+                                <Button Grid.Column="1" Margin="8,0,0,0" Click="GenProgram_Click" ToolTip="{x:Static v:IconMakerPage.GenProgramTip}">
+                                    <StackPanel Style="{StaticResource ButtonContent}">
+                                        <TextBlock Style="{StaticResource ButtonGlyph}" Text="&#xE71D;" />
+                                        <TextBlock Text="{x:Static v:IconMakerPage.GenProgramText}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="GenRollButton" Grid.Column="2" Margin="8,0,0,0" Style="{DynamicResource AccentButtonStyle}" Click="GenRoll_Click"
+                                        ToolTip="{x:Static v:IconMakerPage.GenRollTip}">
+                                    <StackPanel Style="{StaticResource ButtonContent}">
+                                        <TextBlock Style="{StaticResource ButtonGlyph}" Text="&#xE8B1;" />
+                                        <TextBlock Text="{x:Static v:IconMakerPage.GenRollText}" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            <!-- Category: typical shapes, colors and looks (folder, drive and file type use the Windows shapes) -->
+                            <ListBox x:Name="GenCategoryList" Style="{StaticResource ChipList}" Margin="0,10,0,0" SelectionChanged="GenCategory_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Glyph}" FontFamily="{StaticResource IconFont}" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                            <TextBlock Text="{Binding Name}" FontSize="13" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <!-- Chosen program: its icon is one of the contents and gives the main color -->
+                            <Border x:Name="GenProgramChip" HorizontalAlignment="Left" Margin="0,8,0,0" CornerRadius="12" Padding="6,3,4,3" Visibility="Collapsed"
+                                    Background="{DynamicResource ControlFillColorSecondaryBrush}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image x:Name="GenProgramIcon" Width="18" Height="18" Margin="0,0,6,0" RenderOptions.BitmapScalingMode="HighQuality" />
+                                    <TextBlock x:Name="GenProgramName" FontSize="12" VerticalAlignment="Center" />
+                                    <Button Margin="6,0,0,0" Padding="4,2" Background="Transparent" BorderThickness="0" Click="GenProgramClear_Click"
+                                            ToolTip="{x:Static local:Loc.Delete}" AutomationProperties.Name="{x:Static local:Loc.Delete}">
+                                        <TextBlock Style="{StaticResource IconText}" Text="&#xE711;" FontSize="9" />
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                            <ListBox x:Name="GenList" Style="{StaticResource PickList}" Margin="-4,10,0,0" SelectionChanged="GenList_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Image}" Width="60" Height="60" Margin="2" RenderOptions.BitmapScalingMode="HighQuality" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <WrapPanel Margin="0,6,0,0">
+                                <TextBlock Text="{x:Static v:IconMakerPage.GenKeepText}" Style="{StaticResource CardDesc}" VerticalAlignment="Center" Margin="0,0,12,6" />
+                                <CheckBox x:Name="GenLockContent" MinWidth="0" Content="{x:Static v:IconMakerPage.GenLockContentText}" Margin="0,0,16,6" IsEnabled="False" />
+                                <CheckBox x:Name="GenLockColors" MinWidth="0" Content="{x:Static v:IconMakerPage.GenLockColorsText}" Margin="0,0,16,6" IsEnabled="False" />
+                                <CheckBox x:Name="GenLockShape" MinWidth="0" Content="{x:Static v:IconMakerPage.GenLockShapeText}" Margin="0,0,16,6" IsEnabled="False" />
+                                <CheckBox x:Name="GenLockLook" MinWidth="0" Content="{x:Static v:IconMakerPage.GenLockLookText}" Margin="0,0,24,6" IsEnabled="False" />
+                                <Button x:Name="GenSeriesButton" Click="GenSeries_Click" Margin="0,0,0,6" IsEnabled="False" ToolTip="{x:Static v:IconMakerPage.GenSeriesTip}">
+                                    <StackPanel Style="{StaticResource ButtonContent}">
+                                        <TextBlock Style="{StaticResource ButtonGlyph}" Text="&#xF0E2;" />
+                                        <TextBlock Text="{x:Static v:IconMakerPage.GenSeriesText}" />
+                                    </StackPanel>
+                                </Button>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===================== Tile ===================== -->
+                    <Expander Style="{StaticResource SettingsExpander}" IsExpanded="True">
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource NavGlyph}" Text="&#xECA5;" FontSize="18" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.TileTitle}" Style="{StaticResource CardTitle}" />
+                                    <TextBlock Text="{x:Static v:IconMakerPage.TileDesc}" Style="{StaticResource CardDesc}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static v:IconMakerPage.StyleSource}" Style="{StaticResource Label}" Margin="0,0,0,6" />
+                            <ComboBox x:Name="StyleBox" DisplayMemberPath="Label" SelectionChanged="StyleBox_SelectionChanged" HorizontalAlignment="Left" MinWidth="260" />
+                            <TextBlock x:Name="StyleHint" Style="{StaticResource CardDesc}" Margin="0,6,0,0" />
+
+                            <TextBlock Text="{x:Static v:IconMakerPage.ShapeText}" Style="{StaticResource Label}" />
+                            <ListBox x:Name="ShapeList" Style="{StaticResource PickList}" SelectionChanged="ShapeList_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="34" Height="34" ToolTip="{Binding Label}" Background="Transparent">
+                                            <Path Data="{Binding Geometry}" Fill="{DynamicResource TextFillColorSecondaryBrush}" Stretch="Uniform" />
+                                            <TextBlock Text="{Binding Glyph}" FontFamily="{StaticResource IconFont}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <TextBlock Text="{x:Static v:IconMakerPage.FillText}" Style="{StaticResource Label}" />
+                            <WrapPanel>
+                                <ComboBox x:Name="BgKind" Width="190" SelectionChanged="Changed_SelectionChanged" Margin="0,0,8,6" />
+                                <c:ColorButton x:Name="BgColor1" ColorChanged="Color_Changed" Margin="0,0,8,6" />
+                                <c:ColorButton x:Name="BgColor2" ColorChanged="Color_Changed" Margin="0,0,8,6" />
+                            </WrapPanel>
+                            <DockPanel x:Name="BgAnglePanel">
+                                <TextBlock Text="{x:Static v:IconMakerPage.AngleText}" Style="{StaticResource CardDesc}" Width="110" VerticalAlignment="Center" />
+                                <Slider x:Name="BgAngle" Minimum="0" Maximum="360" ValueChanged="Slider_Changed" />
+                            </DockPanel>
+                            <!-- Color families: one click sets a matching background (and a readable content color) -->
+                            <TextBlock Text="{x:Static v:IconMakerPage.PaletteText}" Style="{StaticResource Label}" />
+                            <DockPanel>
+                                <ComboBox x:Name="PaletteFamilyBox" DockPanel.Dock="Left" Width="150" DisplayMemberPath="Name" VerticalAlignment="Top"
+                                          SelectionChanged="PaletteFamilyBox_SelectionChanged" Margin="0,0,12,0" />
+                                <ItemsControl x:Name="PaletteSwatches" Focusable="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Click="Swatch_Click" Tag="{Binding}" Width="30" Height="30" Padding="0" Margin="0,0,6,6" Cursor="Hand"
+                                                    ToolTip="{x:Static v:IconMakerPage.SwatchTip}">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Grid>
+                                                            <Ellipse x:Name="Ring" Stroke="{DynamicResource ControlStrokeColorDefaultBrush}" StrokeThickness="1" Fill="{Binding Brush}" />
+                                                        </Grid>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Ring" Property="Stroke" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                                                                <Setter TargetName="Ring" Property="StrokeThickness" Value="2" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DockPanel>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===================== Tile effects ===================== -->
+                    <Expander Style="{StaticResource SettingsExpander}">
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource NavGlyph}" Text="&#xE706;" FontSize="18" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.TileEffectsTitle}" Style="{StaticResource CardTitle}" />
+                                    <TextBlock Text="{x:Static v:IconMakerPage.TileEffectsDesc}" Style="{StaticResource CardDesc}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <WrapPanel>
+                                <CheckBox MinWidth="0" x:Name="BorderOn" Content="{x:Static v:IconMakerPage.BorderText}" Click="Changed_Click" Margin="0,0,8,6" />
+                                <c:ColorButton x:Name="BorderColor" ColorChanged="Color_Changed" Margin="0,0,24,6" />
+                                <CheckBox MinWidth="0" x:Name="TileShadowOn" Content="{x:Static v:IconMakerPage.ShadowText}" Click="Changed_Click" Margin="0,0,8,6" />
+                                <c:ColorButton x:Name="TileShadowColor" ColorChanged="Color_Changed" Margin="0,0,24,6" />
+                                <CheckBox MinWidth="0" x:Name="GlossOn" Content="{x:Static v:IconMakerPage.GlossText}" Click="Changed_Click" Margin="0,0,24,6" />
+                                <CheckBox MinWidth="0" x:Name="OverlayOn" Content="{x:Static v:IconMakerPage.OverlayText}" Click="Changed_Click" Margin="0,0,24,6" />
+                                <CheckBox MinWidth="0" x:Name="ClipOn" Content="{x:Static v:IconMakerPage.ClipText}" Click="Changed_Click" Margin="0,0,0,6" />
+                            </WrapPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <DockPanel>
+                                    <TextBlock Text="{x:Static v:IconMakerPage.BorderWidthText}" Style="{StaticResource CardDesc}" Width="80" VerticalAlignment="Center" />
+                                    <Slider x:Name="BorderWidth" Minimum="1" Maximum="20" ValueChanged="Slider_Changed" />
+                                </DockPanel>
+                                <DockPanel Grid.Column="2">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.ShadowSizeText}" Style="{StaticResource CardDesc}" Width="80" VerticalAlignment="Center" />
+                                    <Slider x:Name="TileShadowSize" Minimum="2" Maximum="40" ValueChanged="Slider_Changed" />
+                                </DockPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===================== Layers ===================== -->
+                    <Expander Style="{StaticResource SettingsExpander}" IsExpanded="True">
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource NavGlyph}" Text="&#xE81E;" FontSize="18" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.LayersTitle}" Style="{StaticResource CardTitle}" />
+                                    <TextBlock Text="{x:Static v:IconMakerPage.LayersDesc}" Style="{StaticResource CardDesc}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,6">
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Button Padding="7,4" Click="LayerUp_Click" ToolTip="{x:Static v:IconMakerPage.UpText}"><TextBlock Style="{StaticResource IconText}" Text="&#xE70E;" FontSize="12" /></Button>
+                                    <Button Padding="7,4" Margin="4,0,0,0" Click="LayerDown_Click" ToolTip="{x:Static v:IconMakerPage.DownText}"><TextBlock Style="{StaticResource IconText}" Text="&#xE70D;" FontSize="12" /></Button>
+                                    <Button Padding="7,4" Margin="4,0,0,0" Click="LayerDuplicate_Click" ToolTip="{x:Static v:IconMakerPage.DuplicateText}"><TextBlock Style="{StaticResource IconText}" Text="&#xE8C8;" FontSize="12" /></Button>
+                                    <Button Padding="7,4" Margin="4,0,0,0" Click="LayerDelete_Click" ToolTip="{x:Static local:Loc.Delete}"><TextBlock Style="{StaticResource IconText}" Text="&#xE74D;" FontSize="12" /></Button>
+                                </StackPanel>
+                                <WrapPanel Margin="0,0,12,0">
+                                    <Button Content="{x:Static v:IconMakerPage.AddGlyphText}" Click="AddGlyph_Click" Margin="0,0,6,6" />
+                                    <Button Content="{x:Static v:IconMakerPage.AddTextText}" Click="AddText_Click" Margin="0,0,6,6" />
+                                    <Button Content="{x:Static v:IconMakerPage.AddImageText}" Click="AddImage_Click" Margin="0,0,6,6" />
+                                    <Button Content="{x:Static v:IconMakerPage.AddProgramText}" Click="AddProgram_Click" Margin="0,0,6,6" />
+                                    <Button Content="{x:Static v:IconMakerPage.AddPackIconText}" Click="AddPackIcon_Click" Margin="0,0,6,6" />
+                                    <Button Content="{x:Static v:IconMakerPage.AddBadgeText}" Click="AddBadge_Click" Margin="0,0,6,6" />
+                                </WrapPanel>
+                            </DockPanel>
+                            <ListBox x:Name="LayerList" ItemContainerStyle="{StaticResource LayerItem}" Background="Transparent" BorderThickness="0"
+                                     SelectionChanged="LayerList_SelectionChanged" MaxHeight="170" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Visible}" MinWidth="0" Padding="0" Margin="0,0,8,0"
+                                                      Click="LayerVisible_Click" ToolTip="{x:Static v:IconMakerPage.VisibleText}" />
+                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock x:Name="NoLayersHint" Text="{x:Static v:IconMakerPage.NoLayersText}" Style="{StaticResource CardDesc}" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===================== Selected layer ===================== -->
+                    <Expander x:Name="LayerProps" Style="{StaticResource SettingsExpander}" IsExpanded="True">
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource NavGlyph}" Text="&#xE70F;" FontSize="18" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock x:Name="LayerPropsTitle" Text="{x:Static v:IconMakerPage.LayerPropsTitleText}" Style="{StaticResource CardTitle}" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Text="{x:Static v:IconMakerPage.LayerPropsDesc}" Style="{StaticResource CardDesc}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel Margin="0,-12,0,0">
+                                <!-- Symbol -->
+                                <StackPanel x:Name="GlyphPanel">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.SymbolText}" Style="{StaticResource Label}" />
+                                    <ComboBox x:Name="GlyphSetBox" DisplayMemberPath="Name" HorizontalAlignment="Left" MinWidth="260" Margin="0,0,0,8"
+                                              SelectionChanged="GlyphSetBox_SelectionChanged" />
+                                    <Grid>
+                                        <TextBox x:Name="GlyphSearch" TextChanged="GlyphSearch_TextChanged" Padding="10,6,32,6" />
+                                        <TextBlock x:Name="GlyphSearchHint" Text="{x:Static v:IconMakerPage.GlyphSearchText}" IsHitTestVisible="False" Margin="12,0,0,0"
+                                                   VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Style="{StaticResource IconText}" Text="&#xE721;" FontSize="13" HorizontalAlignment="Right" Margin="0,0,12,0" IsHitTestVisible="False" />
+                                    </Grid>
+                                    <Border Height="194" Margin="0,8,0,0" CornerRadius="6" BorderThickness="1" Padding="4,4,0,4"
+                                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+                                        <c:GlyphGrid x:Name="GlyphList" GlyphChosen="GlyphList_GlyphChosen" />
+                                    </Border>
+                                    <TextBlock x:Name="GlyphInfo" Style="{StaticResource CardDesc}" Margin="0,4,0,0" />
+                                </StackPanel>
+
+                                <!-- Text and badge -->
+                                <StackPanel x:Name="TextPanel">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.TextText}" Style="{StaticResource Label}" />
+                                    <WrapPanel>
+                                        <TextBox x:Name="LayerText" Width="130" MaxLength="6" TextChanged="LayerText_TextChanged" Margin="0,0,8,6" />
+                                        <ComboBox x:Name="FontBox" Width="210" SelectionChanged="Changed_SelectionChanged" Margin="0,0,8,6" />
+                                        <CheckBox MinWidth="0" x:Name="BoldBox" Content="{x:Static v:IconMakerPage.BoldText}" Click="Changed_Click" VerticalAlignment="Center" Margin="0,0,0,6" />
+                                    </WrapPanel>
+                                </StackPanel>
+                                <StackPanel x:Name="BadgePanel" Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.BadgeColorText}" Style="{StaticResource CardDesc}" VerticalAlignment="Center" Width="110" />
+                                    <c:ColorButton x:Name="BadgeColor" ColorChanged="Color_Changed" />
+                                </StackPanel>
+
+                                <!-- Image -->
+                                <StackPanel x:Name="ImagePanel">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.ImageText}" Style="{StaticResource Label}" />
+                                    <WrapPanel>
+                                        <Button Content="{x:Static v:IconMakerPage.ChooseImageText}" Click="ReplaceImage_Click" Margin="0,0,6,6" />
+                                        <Button Content="{x:Static v:IconMakerPage.ChooseProgramText}" Click="ReplaceProgram_Click" Margin="0,0,6,6" />
+                                        <Button Content="{x:Static v:IconMakerPage.ChoosePackIconText}" Click="ReplacePackIcon_Click" Margin="0,0,6,6" />
+                                    </WrapPanel>
+                                    <CheckBox MinWidth="0" x:Name="TintBox" Content="{x:Static v:IconMakerPage.TintText}" Click="Changed_Click" Margin="0,4,0,0" />
+                                </StackPanel>
+
+                                <!-- Fill of the layer -->
+                                <TextBlock x:Name="LayerFillLabel" Text="{x:Static v:IconMakerPage.ColorText}" Style="{StaticResource Label}" />
+                                <WrapPanel x:Name="LayerFillPanel">
+                                    <ComboBox x:Name="LayerFillKind" Width="190" SelectionChanged="Changed_SelectionChanged" Margin="0,0,8,6" />
+                                    <c:ColorButton x:Name="LayerColor1" ColorChanged="Color_Changed" Margin="0,0,8,6" />
+                                    <c:ColorButton x:Name="LayerColor2" ColorChanged="Color_Changed" Margin="0,0,8,6" />
+                                </WrapPanel>
+
+                                <!-- Outline and shadow -->
+                                <TextBlock Text="{x:Static v:IconMakerPage.EffectsText}" Style="{StaticResource Label}" />
+                                <WrapPanel>
+                                    <CheckBox MinWidth="0" x:Name="OutlineOn" Content="{x:Static v:IconMakerPage.OutlineText}" Click="Changed_Click" Margin="0,0,8,6" />
+                                    <c:ColorButton x:Name="OutlineColor" ColorChanged="Color_Changed" Margin="0,0,24,6" />
+                                    <ComboBox x:Name="ShadowKindBox" Width="170" SelectionChanged="Changed_SelectionChanged" Margin="0,0,8,6" />
+                                    <c:ColorButton x:Name="ShadowColor" ColorChanged="Color_Changed" Margin="0,0,0,6" />
+                                </WrapPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <DockPanel>
+                                        <TextBlock Text="{x:Static v:IconMakerPage.OutlineWidthText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="OutlineWidth" Minimum="1" Maximum="16" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.ShadowSizeText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="ShadowSize" Minimum="2" Maximum="200" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="1" Margin="0,6,0,0">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.SizeText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="LayerSize" Minimum="5" Maximum="150" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="1" Grid.Column="2" Margin="0,6,0,0">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.RotationText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="LayerRotation" Minimum="-180" Maximum="180" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="2" Margin="0,6,0,0">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.HorizontalText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="LayerX" Minimum="-50" Maximum="50" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="2" Grid.Column="2" Margin="0,6,0,0">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.VerticalText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="LayerY" Minimum="-50" Maximum="50" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="3" Margin="0,6,0,0">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.OpacityText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="LayerOpacity" Minimum="5" Maximum="100" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="3" Grid.Column="2" Margin="0,6,0,0">
+                                        <TextBlock Text="{x:Static v:IconMakerPage.ShadowAngleText}" Style="{StaticResource CardDesc}" Width="90" VerticalAlignment="Center" />
+                                        <Slider x:Name="ShadowAngle" Minimum="0" Maximum="360" ValueChanged="Slider_Changed" />
+                                    </DockPanel>
+                                </Grid>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ===================== Preview and save ===================== -->
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="12,0,0,0">
+                <Border Style="{StaticResource Card}" Padding="20,16,20,20">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,10">
+                            <Button DockPanel.Dock="Right" Click="New_Click" Padding="8,4" Background="Transparent" BorderThickness="0"
+                                    ToolTip="{x:Static v:IconMakerPage.NewDesignText}">
+                                <StackPanel Style="{StaticResource ButtonContent}">
+                                    <TextBlock Style="{StaticResource ButtonGlyph}" Text="&#xE710;" FontSize="12" />
+                                    <TextBlock Text="{x:Static v:IconMakerPage.NewShortText}" FontSize="13" />
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Text="{x:Static v:IconMakerPage.PreviewText}" Style="{StaticResource CardTitle}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        </DockPanel>
+                        <Border Height="196" CornerRadius="8" Background="{DynamicResource ControlFillColorSecondaryBrush}">
+                            <Image x:Name="Preview" Width="164" Height="164" RenderOptions.BitmapScalingMode="HighQuality" />
+                        </Border>
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border CornerRadius="6" Background="#F3F3F3" Padding="6">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Image x:Name="SmallLight48" Width="48" Height="48" Margin="0,0,6,0" />
+                                    <Image x:Name="SmallLight32" Width="32" Height="32" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                    <Image x:Name="SmallLight16" Width="16" Height="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" CornerRadius="6" Background="#202020" Padding="6">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Image x:Name="SmallDark48" Width="48" Height="48" Margin="0,0,6,0" />
+                                    <Image x:Name="SmallDark32" Width="32" Height="32" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                    <Image x:Name="SmallDark16" Width="16" Height="16" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{x:Static local:Loc.Name}" Style="{StaticResource Label}" Margin="0,16,0,6" />
+                        <TextBox x:Name="NameBox" TextChanged="NameBox_TextChanged" />
+                        <Button x:Name="SaveButton" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Stretch" Margin="0,12,0,0" Click="Save_Click">
+                            <StackPanel Style="{StaticResource ButtonContent}">
+                                <TextBlock Style="{StaticResource ButtonGlyph}" Text="&#xE74E;" />
+                                <TextBlock x:Name="SaveButtonText" Text="{x:Static v:IconMakerPage.SaveText}" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="SaveAsNewButton" HorizontalAlignment="Stretch" Margin="0,8,0,0" Click="SaveAsNew_Click" Visibility="Collapsed"
+                                Content="{x:Static v:IconMakerPage.SaveAsNewText}" />
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="AssignButton" HorizontalAlignment="Stretch" Click="Assign_Click" IsEnabled="False">
+                                <StackPanel Style="{StaticResource ButtonContent}">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.AssignShortText}" />
+                                    <TextBlock Style="{StaticResource IconText}" Text="&#xE70D;" FontSize="10" Margin="8,1,0,0" />
+                                </StackPanel>
+                                <Button.ContextMenu>
+                                    <ContextMenu x:Name="AssignMenu" Placement="Bottom" />
+                                </Button.ContextMenu>
+                            </Button>
+                            <Button x:Name="ExportButton" Grid.Column="2" HorizontalAlignment="Stretch" Click="Export_Click">
+                                <StackPanel Style="{StaticResource ButtonContent}">
+                                    <TextBlock Text="{x:Static v:IconMakerPage.ExportText}" />
+                                    <TextBlock Style="{StaticResource IconText}" Text="&#xE70D;" FontSize="10" Margin="8,1,0,0" />
+                                </StackPanel>
+                                <Button.ContextMenu>
+                                    <ContextMenu x:Name="ExportMenu" Placement="Bottom">
+                                        <MenuItem Header="{x:Static v:IconMakerPage.ExportPngText}" Click="ExportPng_Click" />
+                                        <MenuItem Header="{x:Static v:IconMakerPage.ExportIcoText}" Click="ExportIco_Click" />
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </Grid>
+                        <TextBlock x:Name="SavedText" Style="{StaticResource CardDesc}" Margin="0,10,0,0" Visibility="Collapsed" />
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

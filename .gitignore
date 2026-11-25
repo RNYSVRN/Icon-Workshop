@@ -1,0 +1,15 @@
+# Build output
+bin/
+obj/
+dist/
+*.user
+.vs/
+.vscode/
+
+# Local work files (old drafts, third-party icon packs and tools, notes) - never published
+_legacy/
+_tools/
+_notes/
+*.apk
+*.apks
+*.xapk

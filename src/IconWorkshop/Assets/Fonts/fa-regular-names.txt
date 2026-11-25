@@ -1,0 +1,163 @@
+﻿address-book f2b9 contact directory employee index little black book portfolio rolodex uer username
+address-card f2bb about contact employee id identification portfolio postcard profile registration uer username
+bell f0f3 alarm alert bel bell chime notification reminder request
+bell-slash f1f6 alert bell bell with slash cancel disabled forbidden mute notification off quiet reminder silent
+bookmark f02e bookmark favorite library mark marker read remember research save
+building f1ad apartment building business city company office office building urban work
+calendar f133 calendar calendar-o date day event month schedule tear-off calendar time when year
+calendar-check f274 accept agree appointment confirm correct date day done enable event month ok schedule select success tick time todo validate warranty when working year
+calendar-days f073 calendar date day event month schedule time when year
+calendar-minus f272 calendar date day delete event month negative remove schedule time when year
+calendar-plus f271 add calendar create date day event month new positive schedule time when year
+calendar-xmark f273 archive calendar date day delete event month remove schedule time uncheck when x year
+chart-bar f080 analytics bar chart graph performance statistics
+chess-bishop f43a Black Chess Bishop board checkmate game strategy
+chess-king f43f Black Chess King board checkmate game strategy
+chess-knight f441 Black Chess Knight board checkmate game horse strategy
+chess-pawn f443 board checkmate chess chess pawn dupe expendable game strategy
+chess-queen f445 Black Chess Queen board checkmate game strategy
+chess-rook f447 Black Chess Rook board castle checkmate game strategy
+circle f111 Black Circle Black Large Circle black circle blue blue circle brown brown circle chart circle circle-thin diameter dot ellipse fill geometric green green circle notification orange orange circle progress purple purple circle red red circle round white circle yellow yellow circle
+circle-check f058 accept affected agree clear confirm correct coupon done enable ok select success tick todo validate working yes
+circle-dot f192 bullseye button geometric notification radio radio button target
+circle-down f358 arrow-circle-o-down download
+circle-left f359 arrow-circle-o-left back previous
+circle-pause f28b hold wait
+circle-play f144 audio music playing sound start video
+circle-question f059 faq help information support unknown
+circle-right f35a arrow-circle-o-right forward next
+circle-stop f28d block box circle square
+circle-up f35b arrow-circle-o-up upgrade
+circle-user f2bd employee uer username users-people
+circle-xmark f057 close cross destroy exit incorrect notice notification notify problem uncheck wrong x
+clipboard f328 clipboar clipboard copy notepad notes paste record
+clock f017 00 4 4:00 clock date four four oâ€™clock hour late minute o'clock oâ€™clock pending schedule ticking time timer timestamp watch
+clone f24d arrange copy duplicate paste
+closed-captioning f20a cc deaf hearing subtitle subtitling text video
+comment f075 Right Speech Bubble answer bubble chat commenting conversation conversation discussion feedback message note notification sms speech talk talking texting
+comment-dots f4ad answer balloon bubble chat comic commenting conversation dialog feedback message more note notification reply request sms speech speech balloon texting
+comments f086 Two Speech Bubbles answer bubble chat commenting conversation conversation discussion feedback message note notification sms speech talk talking texting
+compass f14e compass directions directory location magnetic menu navigation orienteering safari travel
+copy f0c5 clone duplicate file files-o paper paste
+copyright f1f9 brand c copyright mark register trademark
+credit-card f09d buy card checkout credit credit card credit-card-alt debit money payment purchase
+envelope f0e0 Back of Envelope e-mail email envelope letter mail message newsletter notification offer support
+envelope-open f2b6 e-mail email letter mail message newsletter notification offer support
+eye f06e body eye look optic see seen show sight views visible
+eye-slash f070 blind disabled hide show toggle unseen views visible visiblity
+face-angry f556 angry angry face disapprove emoticon face mad upset
+face-dizzy f567 dazed dead disapprove emoticon face
+face-flushed f579 dazed embarrassed emoticon face flushed flushed face
+face-frown f119 disapprove emoticon face frown frowning face rating sad uer
+face-frown-open f57a disapprove emoticon face frown frowning face with open mouth mouth open rating sad
+face-grimace f57f cringe emoticon face grimace grimacing face teeth
+face-grin f580 emoticon face grin grinning face laugh smile
+face-grin-beam f582 emoticon eye face grinning face with smiling eyes laugh mouth open smile
+face-grin-beam-sweat f583 cold embarass emoticon face grinning face with sweat open smile sweat
+face-grin-hearts f584 emoticon eye face love smile smiling face with heart-eyes
+face-grin-squint f585 emoticon face grinning squinting face laugh mouth satisfied smile
+face-grin-squint-tears f586 emoticon face floor happy laugh rolling rolling on the floor laughing smile
+face-grin-stars f587 emoticon eyes face grinning quality star star-struck starry-eyed vip
+face-grin-tears f588 LOL emoticon face face with tears of joy joy laugh tear
+face-grin-tongue f589 LOL emoticon face face with tongue tongue
+face-grin-tongue-squint f58a LOL emoticon eye face horrible squinting face with tongue taste tongue
+face-grin-tongue-wink f58b LOL emoticon eye face joke tongue wink winking face with tongue
+face-grin-wide f581 emoticon face grinning face with big eyes laugh mouth open smile
+face-grin-wink f58c emoticon face flirt laugh smile
+face-kiss f596 beso emoticon face kiss kissing face love smooch
+face-kiss-beam f597 beso emoticon eye face kiss kissing face with smiling eyes love smile smooch
+face-kiss-wink-heart f598 beso emoticon face face blowing a kiss kiss love smooch
+face-laugh f599 LOL emoticon face laugh smile
+face-laugh-beam f59a LOL beaming face with smiling eyes emoticon eye face grin happy smile
+face-laugh-squint f59b LOL emoticon face happy smile
+face-laugh-wink f59c LOL emoticon face happy smile
+face-meh f11a deadpan default emoticon face meh neutral neutral face rating uer
+face-meh-blank f5a4 emoticon face face without mouth mouth neutral quiet rating silent
+face-rolling-eyes f5a5 emoticon eyeroll eyes face face with rolling eyes neutral rating rolling
+face-sad-cry f5b3 cry emoticon face loudly crying face sad sob tear tears
+face-sad-tear f5b4 cry crying face emoticon face sad tear tears
+face-smile f118 approve default emoticon face happy rating satisfied slightly smiling face smile uer
+face-smile-beam f5b8 blush emoticon eye face happy positive smile smiling face with smiling eyes
+face-smile-wink f4da emoticon face happy hint joke wink winking face
+face-surprise f5c2 emoticon face face with open mouth mouth open shocked sympathy
+face-tired f5c8 angry emoticon face grumpy tired tired face upset
+file f15b Empty Document cv document new page page facing up pdf resume
+file-audio f1c7 document mp3 music page play sound
+file-code f1c9 css development document html mysql sql
+file-excel f1c3 csv document numbers spreadsheets table
+file-image f1c5 Document with Picture document image img jpg photo png
+file-lines f15c Document Document with Text document file-text invoice new page pdf
+file-pdf f1c1 acrobat document preview save
+file-powerpoint f1c4 display document keynote presentation
+file-video f1c8 document m4v movie mp4 play
+file-word f1c2 document edit page text writing
+file-zipper f1c6 .zip bundle compress compression download zip
+flag f024 black flag country notice notification notify pole report symbol waving
+floppy-disk f0c7 Black Hard Shell Floppy Disk computer disk download floppy floppy disk floppy-o
+folder f07b Black Folder archive directory document file file folder folder
+folder-closed e185 file
+folder-open f07c Open Folder archive directory document empty file folder new open open file folder
+font-awesome f2b4 awesome flag font icons typeface
+futbol f1e3 ball football mls soccer soccer ball
+gem f3a5 diamond gem gem stone jewel jewelry sapphire stone treasure
+hand f256 Raised Hand backhand game halt palm raised raised back of hand request roshambo stop
+hand-back-fist f255 fist game roshambo
+hand-lizard f258 game roshambo
+hand-peace f25b hand rest truce v victory victory hand
+hand-point-down f0a7 finger hand-o-down point
+hand-point-left f0a5 back finger hand-o-left left point previous
+hand-point-right f0a4 finger forward hand-o-right next point right
+hand-point-up f0a6 finger hand hand-o-up index index pointing up point request up upgrade
+hand-pointer f25a arrow cursor select
+hand-scissors f257 cut game roshambo
+hand-spock f259 finger hand live long palm prosper salute spock star trek vulcan vulcan salute
+handshake f2b5 agreement greeting meeting partnership
+hard-drive f0a0 Hard Disk cpu hard drive harddrive machine save storage
+heart f004 ace black black heart blue blue heart brown brown heart card evil favorite game green green heart heart heart suit like love orange orange heart purple purple heart red heart relationship valentine white white heart wicked wishlist yellow yellow heart
+hospital f0f8 building covid-19 doctor emergency room hospital medical center medicine
+hourglass f254 hour hourglass hourglass not done minute sand stopwatch time timer
+hourglass-half f252 hour minute pending sand stopwatch time waiting
+id-badge f2c1 address contact identification license profile uer username
+id-card f2c2 contact demographics document identification issued profile registration uer username
+image f03e album img landscape photo picture
+images f302 album img landscape photo picture
+keyboard f11c accessory computer edit input keyboard text type write
+lemon f094 citrus fruit lemon lemonade lime tart
+life-ring f1cd coast guard help overboard save support
+lightbulb f0eb bulb bulb comic comic electric electric energy idea idea innovation inspiration inspiration light light bulb mechanical
+map f279 address coordinates destination gps localize location map navigation paper pin place point of interest position route travel world world map
+message f27a answer bubble chat commenting conversation conversation discussion feedback message note notification sms speech talk talking texting
+money-bill-1 f3d1 buy cash checkout money payment premium price purchase salary
+moon f186 Power Sleep Symbol contrast crescent crescent moon dark lunar moon night
+newspaper f1ea article editorial headline journal journalism news newsletter newspaper paper press
+note-sticky f249 message note paper reminder sticker
+object-group f247 combine copy design merge select
+object-ungroup f248 copy design merge select separate
+paper-plane f1d8 air float fold mail paper send
+paste f0ea clipboard copy document paper
+pen-to-square f044 edit modify pen pencil update write
+rectangle-list f022 cheatsheet checklist completed done finished ol summary todo ul
+rectangle-xmark f410 browser cancel computer development uncheck
+registered f25d copyright mark r registered trademark
+share-from-square f14d forward save send social
+snowflake f2dc Heavy Chevron Snowflake cold precipitation rain snow snowfall snowflake winter
+square f0c8 Black Square black medium square block box geometric shape square white medium square
+square-caret-down f150 arrow caret-square-o-down dropdown expand insert menu more triangle
+square-caret-left f191 arrow back caret-square-o-left previous triangle
+square-caret-right f152 arrow caret-square-o-right forward next triangle
+square-caret-up f151 arrow caret-square-o-up collapse triangle upgrade upload
+square-check f14a accept agree box button check check box with check check mark button checkmark confirm correct coupon done enable mark ok select success tick todo validate working yes âœ“
+square-full f45c black large square block blue blue square box brown brown square geometric green green square orange orange square purple purple square red red square shape square white large square yellow yellow square
+square-minus f146 collapse delete hide minify negative remove shape trash
+square-plus f0fe add create expand new positive shape
+star f005 achievement award favorite important night quality rating score star vip
+star-half f089 achievement award rating score star-half-empty star-half-full
+star-half-stroke f5c0 achievement award rating score star-half-empty star-half-full
+sun f185 bright brighten contrast day lighter rays sol solar star sun sunny weather
+thumbs-down f165 -1 disagree disapprove dislike down hand social thumb thumbs down thumbs-o-down
+thumbs-up f164 +1 agree approve favorite hand like ok okay social success thumb thumbs up thumbs-o-up up yes you got it dude
+trash-can f2ed delete garbage hide remove trash-o
+user f007 adult bust bust in silhouette default employee gender-neutral person profile silhouette uer unspecified gender username users-people
+window-maximize f2d0 Maximize browser computer development expand
+window-minimize f2d1 Minimize browser collapse computer development
+window-restore f2d2 browser computer development
